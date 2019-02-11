@@ -4,10 +4,13 @@ const path = require('path');
 const express = require('express');
 const controller = require('./controller.js');
 
+var publicPath = __dirname + "/public";
+
 //for using http server instead of express server
 var app = express();
 app.use(controller);
 app.use('', controller);
+app.use(express.static(publicPath));
 
 var server = require('http').createServer(app);
 
