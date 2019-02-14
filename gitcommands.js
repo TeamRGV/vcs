@@ -3,6 +3,7 @@ let fs = require('fs');
 let path = require('path')
 
 const push = (sourcePath) => {
+
     let dest = __dirname + "/repos/";
     let sourceArray = sourcePath.split('\\');
     let sourceFolderName = sourceArray[sourceArray.length - 1]
@@ -12,13 +13,6 @@ const push = (sourcePath) => {
 
     parseDirectory(sourcePath, destDir)
 
-
-    // ncp(sourcePath, dest, function (err) {
-    //     if (err) {
-    //         return console.error(err);
-    //     }
-    //     console.log('done!');
-    // });
 }
 
 function parseDirectory(sourceDir, destDir) {
@@ -41,14 +35,6 @@ function parseDirectory(sourceDir, destDir) {
             }
             createFileWithArtifactId(next, files[file], destDir)
 
-            // let myVal = getArtifactId(next, files[x], mainDir)
-            // myVal.then((filename) => {
-            //     //console.log(filename);
-
-            // })
-
-
-
         }
     }
 }
@@ -59,7 +45,6 @@ function createFileWithArtifactId(sourcePath, fileName, destPath) {
         if (err) {
             console.log(err)
         } else {
-            console.log("--------------" + fileName + "----------" + destPath);
             let artifactId = calculateArtifactId(sourcePath, contents)
             fs.appendFile(destPath + "/" + artifactId, contents, (err) => {
                 if (err)
