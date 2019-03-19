@@ -8,19 +8,23 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
 
-router.get('/', (req, res) => {
-    console.log(__dirname);
-    res.render('index');
 
-
-});
-
+//wildcard url for fetching file structure at particular url
 router.get('/repos(/*)?', (req, res) => {
     let pathToRead = __dirname + req.url;
     console.log(pathToRead);
-    fs.readdir(pathToRead + "", (err, files) => {
-        res.json(files);
-    });
+    if (fs.lstatSync(pathToRead).isDirectory() == true) {
+        fs.readdir(pathToRead, (err, files) => {
+
+            res.render('index', { files: files });
+        });
+    } else {
+        res.sendFile(pathToRead);
+        // fs.readFile(pathToRead, 'utf8', function (err, contents) {
+        //     res.json(contents)
+        // })
+    }
+
 });
 
 

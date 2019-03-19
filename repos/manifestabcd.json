@@ -1,0 +1,34 @@
+{
+    "command": "push",
+    "sourceFolder": "abcd",
+    "destFolder": "C:\\GitRepos\\vcs/repos/abcd",
+    "DataTime": "2019-03-19T18:09:33.381Z",
+    "fileNames": [
+        {
+            "fileName": "total.txt",
+            "relativePath": "C:\\GitRepos\\vcs/repos/abcd/myfolder1/total.txt",
+            "artifactId": "0-L0.txt"
+        },
+        {
+            "fileName": "iamfile2.txt",
+            "relativePath": "C:\\GitRepos\\vcs/repos/abcd/iamfile2.txt",
+            "artifactId": "0-L0.txt"
+        },
+        {
+            "fileName": "iamfile.txt",
+            "relativePath": "C:\\GitRepos\\vcs/repos/abcd/iamfile.txt",
+            "artifactId": "30562-L67.txt"
+        },
+        {
+            "fileName": "iamfile1.txt",
+            "relativePath": "C:\\GitRepos\\vcs/repos/abcd/iamfile1.txt",
+            "artifactId": "0-L0.txt"
+        },
+        {
+            "fileName": "aasd.rtf",
+            "relativePath": "C:\\GitRepos\\vcs/repos/abcd/myfolder/aasd.rtf",
+            "artifactId": "3967-L7.rtf"
+        }
+    ],
+    "labels": []
+}

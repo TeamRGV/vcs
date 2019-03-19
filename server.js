@@ -14,8 +14,9 @@ app.use(express.static(publicPath));
 
 var server = require('http').createServer(app);
 
+//attach express view engine
 app.set('view engine', 'ejs');
 
-server.listen(port, () =>{
+server.listen(port, () => {
     console.log("Server started on port" + port);
 });

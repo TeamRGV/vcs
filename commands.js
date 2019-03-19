@@ -1,45 +1,51 @@
 #!/usr/bin/env node
-
+//npm module for making command line app
 const program = require('commander');
 
+//import function from gitcommand file
 const {
-    push
+    createRepo,
+    label,
+    checkOut
 } = require("./gitcommands");
 
+//set version of your app
 program
     .version('1.0.0')
     .description('Version Control System')
 
+//set commands for app
+//currently only one command implemented i.e createRepo
 program
-    .command('push')
-    .alias('p')
-    .description('push to the remote repository')
+    .command('createrepo')
+    .alias('c')
+    .description('initiate a repo in remote directory' + '\n' + 'generate artifact ids' + '\n' + 'generate artifact ids')
     .action(() => {
-        push(process.cwd());
+        createRepo(process.cwd());
+    }).on('--help', () => {
+
+    })
+
+program
+    .command('label')
+    .alias('l')
+    .description('add label to manifest file')
+    .action((manifestFileName, labelName) => {
+
+        label(manifestFileName, labelName, process.cwd());
+    }).on('--help', () => {
+
+    })
+
+program
+    .command('checkout')
+    .alias('co')
+    .description('create your new branch')
+    .action((manifestFileName, branchName) => {
+
+        checkOut(manifestFileName, branchName);
+    }).on('--help', () => {
+
     })
 program.parse(process.argv);
 
-
-/*    
-let filename = "file.txt";
-getArtifactId(filename);
-
-function getArtifactId(filename) {
-    fs.readFile(filename, 'utf8', function (err, contents) {
-        let extension = filename.split(".");
-        let len = contents.length;
-        let weights = [1, 7, 3, 7, 11];
-        let checkSum = 0;
-        let j = 0;
-        for (let i = 0; i < len; i++) {
-            j = j % weights.length;
-            checkSum += weights[j++] * contents.charCodeAt(i);
-        }
-        let modulus = Math.pow(2, 31) - 1;
-        checkSum = checkSum % modulus;
-        let ID = `${checkSum}-L${len}.${extension[1]}`;
-        console.log(ID);
-    });
-}
-
-*/
