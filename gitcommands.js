@@ -1,4 +1,3 @@
-
 let fs = require('fs');
 let path = require('path')
 // var ncp = require('ncp').ncp;
@@ -151,6 +150,11 @@ function parseDirectory(sourceDir, destDir, manifestPath) {
     }
 }
 
+function checkDirectory(file) {
+    let regex = /(\d)*-L(\d)*\.(\b)*/;
+    return regex.test(file);
+}
+
 
 // make subfolders recursively
 function parseDirectoryForCheckOut(sourceDir, destDir, manifestPath) {
@@ -160,7 +164,8 @@ function parseDirectoryForCheckOut(sourceDir, destDir, manifestPath) {
     let tempDir = destDir;
     for (file in files) {
         let next = path.join(sourceDir, files[file]);
-        if (fs.lstatSync(next).isDirectory() == true) {
+        //if (fs.lstatSync(next).checkDirectory() == true) {
+        if (!checkDirectory(files[file])) {
             destDir = tempDir + "/" + files[file];
             fs.mkdirSync(destDir);
             parseDirectoryForCheckOut(next, destDir, manifestPath);
@@ -174,11 +179,14 @@ function parseDirectoryForCheckOut(sourceDir, destDir, manifestPath) {
             };
             manifestData.fileNames.push(fileObject);
             console.log(sourceDir + " ----- " + destDir + '/')
-            // fs.createReadStream(sourceDir).pipe(fs.createWriteStream());
-            // fs.copyFile(sourceDir, destDir, (err) => {
-            //     if (err) throw err;
-            // });
-            // fs.writeFileSync(manifestPath, JSON.stringify(manifestData))
+            fs.writeFileSync(manifestPath, JSON.stringify(manifestData))
+            //fs.createReadStream(sourceDir).pipe(fs.createWriteStream());
+            //fs.copyFile(sourceDir, destDir, (err) => {
+            //    if (err) throw err;
+            //});
+            let fileData = fs.readFileSync(sourceDir + "/" + files[file]);
+            let newFilePath = destDir + "/" + files[file]
+            fs.writeFileSync(newFilePath, fileData)
             // createFileWithArtifactId(next, files[file], destDir, manifestPath)
 
         }
