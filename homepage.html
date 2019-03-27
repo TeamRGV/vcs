@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title></title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+  <link href="/css/style.css" rel="stylesheet" />
+  <style>
+
+
+    .card-body:hover {
+      background-color: #d5dbdb;
+    }
+
+    .card-body:hover .btn-primary{
+      visibility: visible;
+    }
+
+    .btn {} 
+
+    .main {
+
+      background-color: #839192;
+    }
+
+    .btn-primary{
+      position : absolute;
+      top : 8em;
+      left : 1em;
+      visibility: hidden;
+    }
+
+    
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    .card-heading {
+      background-color: grey;
+      position : absolute;
+      top : 0px;
+      left : 0px; 
+      width : 18em;
+      height :3em;
+    }
+
+    .card-text {
+      position: absolute;
+      top : 5em;
+    }
+
+    .card-title {
+      position : absolute;
+      top : 0.5em;
+      left : 4.5em;
+    }
+    th,
+    td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }     
+
+    tr:hover {
+      background-color: #f5f5f5;
+    }
+  </style>
+</head>
+
+<body class = main>
+
+  <div className="col-xs-12" style="width: 100%; height: 100%">
+    <div>
+      <!-- Navigation -->
+      <nav style="background-color: #ea4335" class="navbar navbar-expand-md sticky-top">
+        <div class="container-fluid">
+          <div id="path" style="color: white; font-weight: 700; font-size: 20px; padding: 10px 15px;">
+
+          </div>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <div class="container-fluid " style="/*background-color: #eee;*/ height: 100%; ">
+    <div class=" row padding" style = "padding : 60px 0px 0px 35px;">
+      
+      
+        <div class="col-sm-3 col-md-3" style=" margin: 20px 5px 5px 5px; padding-left: 10%" >
+            <div class="card" style=" width: 18rem; height: 15rem"><a href="#"></a>
+              <div class="card-body">
+                  <div class = "card-heading">
+                    <h5 class="card-title" style="color: white">Check Out</h5>
+                  </div>
+                  <p class="card-text">Clone the desired repository by providing manifest file</p>
+                  <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#myModal2" style="width: 120px ;margin-left: 25%;margin-top: 20%">Proceed</a>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-sm-3 col-md-3" style=" margin: 20px 5px 5px 5px; padding-left: 10%" >
+              <div class="card" style=" width: 18rem; height: 15rem">
+                <div class="card-body">
+                  <div class = "card-heading">
+                    <h5 class="card-title" style="color: white">Check In</h5>
+                    </div>
+                    <p class="card-text">Push the changes you made to repository</p>
+                    <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#myModal1" style="width: 120px ;margin-left: 25%;margin-top: 20% ">Proceed</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-3 col-md-3" style=" margin: 20px 5px 5px 5px; padding-left: 10%" >
+                <div class="card" style=" width: 18rem; height: 15rem">
+                  <div class="card-body">
+                    <div class = "card-heading">
+                      <h5 class="card-title" style="color: white">Create Repo</h5>
+                      </div>
+                      <p class="card-text">Create Repository to work on your project </p>
+                      <a href="#" class="btn btn-primary" style="width: 120px ;margin-left: 25%;margin-top: 20%">Proceed</a>
+                  </div>
+                </div>
+              </div>
+               
+              <div class="col-sm-3 col-md-3" style=" margin: 20px 5px 5px 5px; padding-left: 10%" >
+                  <div class="card" style=" width: 18rem; height: 15rem">
+                    <div class="card-body">
+                      <div class = "card-heading">
+                        <h5 class="card-title" style="color: white">Display Repository</h5>
+                        </div>
+                        <p class="card-text">Display all file in your Repository</p>
+                        <a href="#" class="btn btn-primary" style="width: 120px ;margin-left: 25%;margin-top: 20%">Proceed</a>
+                    </div>
+                  </div>
+                </div>
+           
+                <div class="col-sm-3 col-md-3" style=" margin: 20px 5px 5px 5px; padding-left: 10%" >
+                    <div class="card" style=" width: 18rem; height: 15rem">
+                      <div class="card-body">
+                          <div class = "card-heading">
+                          <h5 class="card-title" style="color: white">Manifest Files</h5>
+                          </div>
+                          <p class="card-text">Display manifest files in your repository</p>
+                          <a href="#" class="btn btn-primary" style="width: 120px ;margin-left: 25%;margin-top: 20%">Proceed</a>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-3 col-md-3" style=" margin: 20px 5px 5px 5px; padding-left: 10%" >
+                      <div class="card" style=" width: 18rem; height: 15rem">
+                        <div class="card-body">
+                            <div class = "card-heading">
+                            <h5 class="card-title" style="color: white">Add Label</h5>
+                            </div>
+                            <p class="card-text">Add Labels to your manifest file</p>
+                            <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#myModal6" style="width: 120px ;margin-left: 25%;margin-top: 20%">Proceed</a>
+                        </div>
+                      </div>
+                    </div>
+
+            </div>
+
+
+ <!-- Modal -->
+  <div class="modal fade" id="myModal1" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          
+          <h4 class="modal-title">Check in</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <input class="form-control input-lg" id="input-lg"  type="text"  placeholder="enter destination folder name" size="50" ><br><br>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+
+
+
+
+
+   <!-- Modal -->
+  <div class="modal fade" id="myModal2" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          
+          <h4 class="modal-title">Check out</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <input class="form-control input-lg" id="input-lg" type="text"  placeholder="enter destination file name" size="50"><br><br>
+          <input class="form-control input-lg" id="input-lg" type="text"  placeholder="enter path" size="50"><br><br>
+          <input class="form-control input-lg" id="input-lg" type="text"  placeholder="enter manifest file name" size="50">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+
+
+
+
+
+<div class="modal fade" id="myModal6" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          
+          <h4 class="modal-title">Label</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <input class="form-control input-lg" id="input-lg" type="text"  placeholder="enter manifest file name" size="50"><br><br>
+          <input class="form-control input-lg" id="input-lg" type="text"  placeholder="enter label" size="50"><br><br>
+          
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+
+
+  
+</div>
+  <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+  <script src="/js/index.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+</body>
+
+</html>
