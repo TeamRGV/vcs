@@ -1,0 +1,14 @@
+{
+    "command": "createrepo",
+    "sourceFolder": "dddd",
+    "destFolder": "C:/GitRepos/vcs/repos/dddd",
+    "DataTime": 1553665790751,
+    "fileNames": [
+        {
+            "fileName": "asdasd.txt",
+            "relativePath": "C:/GitRepos/vcs/repos/dddd/asdasd.txt/8604-L17.txt",
+            "artifactId": "8604-L17.txt"
+        }
+    ],
+    "labels": []
+}{"command":"createrepo","sourceFolder":"dddd","destFolder":"C:/GitRepos/vcs/repos/dddd","DataTime":1553666777842,"fileNames":[],"labels":[]}

@@ -6,7 +6,8 @@ const program = require('commander');
 const {
     createRepo,
     label,
-    checkOut
+    checkOut,
+    checkIn
 } = require("./gitcommands");
 
 //set version of your app
@@ -31,7 +32,7 @@ program
     .alias('l')
     .description('add label to manifest file')
     .action((manifestFileName, labelName) => {
-
+        console.log('Adding label: ' + labelName + ' to ' + manifestFileName)
         label(manifestFileName, labelName, process.cwd());
     }).on('--help', () => {
 
@@ -41,11 +42,29 @@ program
     .command('checkout')
     .alias('co')
     .description('create your new branch')
-    .action((manifestFileName, branchName) => {
+    .action((manifestFileName, branchName, location) => {
+        console.log('Getting data from the repository...')
+        if (location) {
+            checkOut(manifestFileName, branchName, location);
+        } else {
+            checkOut(manifestFileName, branchName, process.cwd());
+        }
 
-        checkOut(manifestFileName, branchName);
     }).on('--help', () => {
 
     })
+
+
+program
+    .command('checkin')
+    .alias('co')
+    .description('push changes in your branch')
+    .action(() => {
+        console.log('Initiating changes in the repository...')
+        checkIn(process.cwd());
+    }).on('--help', () => {
+
+    })
+
 program.parse(process.argv);
 

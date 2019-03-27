@@ -41,34 +41,8 @@
 
         <div style="background-color: #eee;" class="row">
             <div style="margin: auto;" class="second col-md-10">
-                <button id="createfile" onclick="createNewFile()" style="margin-top: 25px; margin-bottom: 25px;"
-                    type="button" class="btn btn-success">Create
-                    File</button>
 
-                <button id="createrepo" onclick="showInput()" style="margin-top: 25px; margin-bottom: 25px;"
-                    type="button" class="btn btn-success">Create
-                    Repo</button>
-                <button id="submitRepoName" onclick="createRepo()"
-                    style="display: none; margin-top: 25px; margin-bottom: 25px;" type="button"
-                    class="btn btn-primary">Submit Name</button>
-                <input type="text" id="repoName" style="display: none ;margin-bottom: 25px;" class="form-control"
-                    placeholder="Enter repository name here...">
-                <table>
-                    <tr>
-                        <th>File Name</th>
-                        <th>Project</th>
-                    </tr>
-                    <% files.forEach((file) =>{ %>
 
-                    <tr>
-                        <td style="cursor:pointer" onClick="goToFolder(this)" id="<%= file %>">
-                            <%= file %>
-                        </td>
-                        <td> - </td>
-                    </tr>
-
-                    <% }) %>
-                </table>
             </div>
         </div>
     </div>

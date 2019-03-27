@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title></title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+    <link href="/css/style.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div className="col-xs-12 col-sm-12 col-md-9 cil-lg-9 col-xl-10">
+        <div>
+            <!-- Navigation -->
+            <nav style="background-color: #ea4335" class="navbar navbar-expand-md sticky-top">
+                <div class="container-fluid">
+                    <div id="path" style="color: white; font-weight: 700; font-size: 20px; padding: 10px 15px;">
+
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        <div style="background-color: #eee;" class="row">
+
+            <div style="margin: auto; display: block;
+  align-items: center;
+  justify-content: center;" class="second col-md-10">
+
+
+                <div class="container"
+                    style="margin-top: 50px; margin-bottom: 50px; background:#ffffff; padding: 20px; border-radius: 5px;">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="folderName" placeholder="Enter foldery name">
+                    </div>
+                    <button onclick="postNewFolderReq()" class="btn btn-primary">Create Folder</button>
+                </div>
+                <div class="container" style="background:#ffffff; padding: 20px; border-radius: 5px;">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="fileName" placeholder="Enter file name">
+                    </div>
+                    <textarea id="fileData" style="width: 100%; height: 200px; margin-bottom: 10px;"
+                        placeholder="Enter the data for the file here"></textarea>
+                    <button onclick="postNewFileReq()" class="btn btn-primary">Create File</button>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="/js/createfile.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+</body>
+
+</html>

@@ -1,16 +1,84 @@
 {
-  "command": "push",
-  "sourceFolder": "abcd",
-  "destFolder": "C:\\Project\\vcs/repos/abcd",
-  "DataTime": "2019-03-19T20:49:50.341Z",
-  "fileNames": [{
-    "fileName": "New Text Document.txt",
-    "relativePath": "C:\\Project\\vcs/repos/abcd/new folder/New Text Document.txt",
-    "artifactId": "12511-L21.txt"
-  }, {
-    "fileName": "file.txt",
-    "relativePath": "C:\\Project\\vcs/repos/abcd/f2/hell/file.txt",
-    "artifactId": "4540-L11.txt"
-  }],
-  "labels": []
+    "command": "checkout",
+    "sourceFolder": "mybranch",
+    "destFolder": "C:/abcdcopy",
+    "DataTime": 1553582388587,
+    "fileNames": [
+        {
+            "fileName": "mm.txt",
+            "relativePath": "C:\\GitRepos\\vcs/repos/abcd/mm.txt//6396-L11.txt",
+            "artifactId": "6396-L11.txt"
+        },
+        {
+            "fileName": "mm.txt",
+            "relativePath": "C:\\GitRepos\\vcs/repos/abcd/mm.txt/6396-L11.txt",
+            "artifactId": "6396-L11.txt"
+        },
+        {
+            "fileName": "mm.txt",
+            "relativePath": "C:/GitRepos/vcs/repos/abcd/mm.txt/6396-L11.txt",
+            "artifactId": "6396-L11.txt"
+        },
+        {
+            "fileName": "mm.txt",
+            "relativePath": "C:/GitRepos/vcs/repos/abcd/mm.txt/6396-L11.txt",
+            "artifactId": "6396-L11.txt"
+        },
+        {
+            "fileName": "mm.txt",
+            "relativePath": "C:/GitRepos/vcs/repos/abcd/mm.txt/6396-L11.txt",
+            "artifactId": "6396-L11.txt"
+        },
+        {
+            "fileName": "abcd",
+            "relativePath": "C:/GitRepos/vcs/repos/abcd/abcdsdad5894-L13.txt",
+            "artifactId": "5894-L13.txt"
+        },
+        {
+            "fileName": "abcd",
+            "relativePath": "C:/GitRepos/vcs/repos/abcd/asdd.txt2470-L7.txt",
+            "artifactId": "2470-L7.txt"
+        },
+        {
+            "fileName": "asddhjhmb.txt",
+            "relativePath": "C:/GitRepos/vcs/repos/abcd/asddhjhmb.txt5403-L12.txt",
+            "artifactId": "5403-L12.txt"
+        },
+        {
+            "fileName": "asddhjhmb.txt",
+            "relativePath": "C:/GitRepos/vcs/repos/abcd/asddhjhmb.txt5403-L12.txt",
+            "artifactId": "5403-L12.txt"
+        },
+        {
+            "fileName": "asddhjhmb.txt",
+            "relativePath": "C:/GitRepos/vcs/repos/abcd/asddhjhmb.txt5403-L12.txt",
+            "artifactId": "5403-L12.txt"
+        },
+        {
+            "fileName": "ggg.txt",
+            "relativePath": "C:/GitRepos/vcs/repos/abcd/ggg.txt1844-L4.txt",
+            "artifactId": "1844-L4.txt"
+        },
+        {
+            "fileName": "yyy.txt",
+            "relativePath": "C:/GitRepos/vcs/repos/abcd/yyy.txt/2108-L4.txt",
+            "artifactId": "2108-L4.txt"
+        },
+        {
+            "fileName": "yyygug.txt",
+            "relativePath": "C:/GitRepos/vcs/repos/abcd/yyygug.txt/4120-L7.txt",
+            "artifactId": "4120-L7.txt"
+        },
+        {
+            "fileName": "i am fille.txt",
+            "relativePath": "C:/GitRepos/vcs/repos/abcd/i am fille.txt/3308-L7.txt",
+            "artifactId": "3308-L7.txt"
+        },
+        {
+            "fileName": "ttt.txt",
+            "relativePath": "C:/GitRepos/vcs/repos/abcd/ttt.txt/3142-L6.txt",
+            "artifactId": "3142-L6.txt"
+        }
+    ],
+    "labels": []
 }
