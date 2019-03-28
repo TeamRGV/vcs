@@ -13,10 +13,13 @@
     <div className="col-xs-12 col-sm-12 col-md-9 cil-lg-9 col-xl-10">
         <div>
             <!-- Navigation -->
-            <nav style="background-color: #ea4335" class="navbar navbar-expand-md sticky-top">
+            <nav style="background-color: #000" class="navbar navbar-expand-md sticky-top">
                 <div class="container-fluid">
                     <div id="path" style="color: white; font-weight: 700; font-size: 20px; padding: 10px 15px;">
-
+                        <div id="path"
+                            style="color: white; font-weight: 700; font-size: 20px; margin: 0 auto; font-family:sans-serif;">
+                            <h3>Create File or Folder</h3>
+                        </div>
                     </div>
                 </div>
             </nav>
@@ -34,7 +37,8 @@
                     <div class="form-group">
                         <input type="text" class="form-control" id="folderName" placeholder="Enter foldery name">
                     </div>
-                    <button onclick="postNewFolderReq()" class="btn btn-primary">Create Folder</button>
+                    <button onclick="postNewFolderReq()" class="btn btn-primary" style="background:#000;">Create
+                        Folder</button>
                 </div>
                 <div class="container" style="background:#ffffff; padding: 20px; border-radius: 5px;">
                     <div class="form-group">
@@ -42,7 +46,8 @@
                     </div>
                     <textarea id="fileData" style="width: 100%; height: 200px; margin-bottom: 10px;"
                         placeholder="Enter the data for the file here"></textarea>
-                    <button onclick="postNewFileReq()" class="btn btn-primary">Create File</button>
+                    <button onclick="postNewFileReq()" class="btn btn-primary " style="background:#000;">Create
+                        File</button>
                 </div>
 
 
@@ -50,7 +55,7 @@
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src=" https://code.jquery.com/jquery-3.3.1.js"> </script>
     <script src="/js/createfile.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>

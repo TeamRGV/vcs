@@ -14,10 +14,7 @@ const {
     checkIn
 } = require("./gitcommands");
 
-router.get('/home', (req, res) => {
-    require('child_process').exec('start "" "c:\\abcd"');
-    res.render('index1');
-})
+
 
 //wildcard url for fetching file structure at particular url
 router.get('/repos(/*)?', (req, res) => {
@@ -45,6 +42,10 @@ router.get('/repos(/*)?', (req, res) => {
     }
 
 });
+
+router.get('/home', (req, res) => {
+    res.render('homepage')
+})
 
 router.get('/manifests', (req, res) => {
     let pathToRead = __dirname + '/repos';
@@ -99,7 +100,8 @@ router.post('/createrepo', (req, res) => {
 })
 
 router.post('/label', (req, res) => {
-    label(req.body.manifestFileName, labelName)
+    label(req.body.manifestFileName, req.body.labelName)
+    res.sendStatus(200);
 })
 
 router.get('/new/repos(/*)?', (req, res) => {
