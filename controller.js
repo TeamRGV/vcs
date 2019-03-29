@@ -146,9 +146,10 @@ router.post('/new/repos(/*)?', (req, res) => {
             else {
                 let artifactFileName = calculateArtifactId(req.body.fileData);
                 let pathToFile = pathForFile + '/' + artifactFileName;
+                let pathToFileForManifestFile = pathForFile;
                 let fileObject = {
                     fileName: req.body.fileName,
-                    relativePath: pathToFile,
+                    relativePath: pathToFileForManifestFile,
                     artifactId: artifactFileName
                 }
                 manifestObject.fileNames.push(fileObject);

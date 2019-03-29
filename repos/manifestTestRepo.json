@@ -1,0 +1,16 @@
+{
+  "command": "createrepo",
+  "sourceFolder": "TestRepo",
+  "destFolder": "C:/Project/Final/vcs/repos/TestRepo",
+  "DataTime": 1553835323940,
+  "fileNames": [{
+    "fileName": "newfile.txt",
+    "relativePath": "C:/Project/Final/vcs/repos/TestRepo/abc/newfile.txt/6188-L11.txt",
+    "artifactId": "6188-L11.txt"
+  }, {
+    "fileName": "asSK.txt",
+    "relativePath": "C:/Project/Final/vcs/repos/TestRepo/asSK.txt",
+    "artifactId": "6877-L13.txt"
+  }],
+  "labels": []
+}

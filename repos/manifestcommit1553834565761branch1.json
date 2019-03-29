@@ -1,0 +1,12 @@
+{
+  "command": "checkin",
+  "sourceFolder": "branch1",
+  "destFolder": "C:/Project/Final/vcs/repos/branch1",
+  "DataTime": 1553834565787,
+  "fileNames": [{
+    "fileName": "change.txt",
+    "relativePath": "C:/Project/Final/vcs/repos/branch1/Project1/zzz/change.txt",
+    "artifactId": "8781-L16.txt"
+  }],
+  "labels": []
+}
