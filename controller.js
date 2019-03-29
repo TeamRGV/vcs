@@ -4,7 +4,9 @@ const path = require('path');
 var bodyParser = require('body-parser')
 
 const router = express.Router();
-router.use(bodyParser.urlencoded({ extended: true }));
+router.use(bodyParser.urlencoded({
+    extended: true
+}));
 router.use(bodyParser.json());
 var mkdirp = require('mkdirp');
 
@@ -28,9 +30,13 @@ router.get('/repos(/*)?', (req, res) => {
                     if (!file.includes(".")) repoNames.push(file)
                 })
 
-                res.render('index', { files: repoNames });
+                res.render('index', {
+                    files: repoNames
+                });
             } else {
-                res.render('index', { files: files });
+                res.render('index', {
+                    files: files
+                });
             }
 
         });
@@ -43,7 +49,12 @@ router.get('/repos(/*)?', (req, res) => {
 
 });
 
+
 router.get('/home', (req, res) => {
+    res.render('homepage')
+})
+
+router.get('/', (req, res) => {
     res.render('homepage')
 })
 
@@ -55,7 +66,9 @@ router.get('/manifests', (req, res) => {
             if (file.includes(".")) manifestNames.push(file)
         })
 
-        res.render('index', { files: manifestNames });
+        res.render('index', {
+            files: manifestNames
+        });
 
     });
 })
@@ -189,7 +202,9 @@ router.post("/repos(/*)?", (req, res) => {
     } else if (req.body.folderName != null || req.body.folderName != null) {
         let path = __dirname + req.url + "/" + req.body.folderName;
         console.log(path);
-        fs.mkdir(path, { recursive: true }, (err) => {
+        fs.mkdir(path, {
+            recursive: true
+        }, (err) => {
             if (err) res.sendStatus(500);
             else res.sendStatus(200);
         });
@@ -227,4 +242,4 @@ function replaceBackSlash(dirName) {
 }
 
 
-module.exports = router;  
+module.exports = router;

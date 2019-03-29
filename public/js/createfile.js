@@ -1,4 +1,3 @@
-
 $(document).ready(() => {
 
 
@@ -12,13 +11,20 @@ function postNewFileReq() {
         fileData,
         file: true
     }
+
     $.ajax({
         url: window.location.href,
         type: 'post',
         data: JSON.stringify(data),
         contentType: 'application/json',
         success: function (data) {
-            alert('file created');
+            document.getElementById('fileName').value = "";
+            document.getElementById('fileData').value = "";
+            document.getElementById('alert').style.display = "block";
+            document.getElementById('alertmessage').innerHTML = "File Created Successfully!";
+            let url = window.location.href;
+            let redirectPath = url.split('new/');
+            location.href = redirectPath[0] + redirectPath[1];
         }
     });
 }
@@ -35,7 +41,13 @@ function postNewFolderReq() {
         data: JSON.stringify(data),
         contentType: 'application/json',
         success: function (data) {
-            alert('folder created');
+            document.getElementById('folderName').value = "";
+            document.getElementById('alert').style.display = "block";
+            document.getElementById('alertmessage').innerHTML = "Folder Created Successfully!";
+            let url = window.location.href;
+            let redirectPath = url.split('new/');
+            location.href = redirectPath[0] + redirectPath[1];
+
         }
     });
 }

@@ -7,6 +7,34 @@
     <title></title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
     <link href="/css/style.css" rel="stylesheet" />
+    <style>
+        .alert {
+            padding: 10px;
+            background-color: #d3d3d3;
+            /* Red */
+            color: white;
+            text-align: center;
+            margin: 0 auto;
+            display: none;
+        }
+
+        /* The close button */
+        .closebtn {
+            margin-left: 15px;
+            color: white;
+            font-weight: bold;
+            float: right;
+            font-size: 22px;
+            line-height: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        /* When moving the mouse over the close button */
+        .closebtn:hover {
+            color: black;
+        }
+    </style>
 </head>
 
 <body>
@@ -23,6 +51,10 @@
                     </div>
                 </div>
             </nav>
+        </div>
+        <div id="alert" class="alert">
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+            <p style="padding:0px; margin:0px;" id="alertmessage">This is alert message</p>
         </div>
 
         <div style="background-color: #eee;" class="row">
