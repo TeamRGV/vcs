@@ -79,20 +79,21 @@ router.post('/checkin', (req, res) => {
 })
 
 router.post('/checkout', (req, res) => {
-    checkOut(req.body.manifestFileName, req.body.branchName, req.body.localRepoPath);
+    checkOut(req.body.manifestFileName.trim(), req.body.branchName.trim(), req.body.localRepoPath.trim());
     res.sendStatus(200)
 })
 
 router.post('/createrepo', (req, res) => {
     let pathForFile = __dirname + "/repos/";
     pathForFile = replaceBackSlash(pathForFile)
-    let manifestPath = pathForFile + 'manifest' + req.body.fileName + '.json';
-    pathForFile += req.body.fileName
+    let manifestPath = pathForFile + 'manifest' + req.body.fileName.trim() + '.json';
+    pathForFile += req.body.fileName.trim()
     mkdirp(pathForFile, (err) => {
+        let fName = req.body.fileName.trim()
         if (err) res.sendStatus(500)
         let manifestData = {
             'command': 'createrepo',
-            'sourceFolder': req.body.fileName,
+            'sourceFolder': fName,
             'destFolder': pathForFile,
             'DataTime': Date.now(),
             'fileNames': [],
@@ -113,7 +114,7 @@ router.post('/createrepo', (req, res) => {
 })
 
 router.post('/label', (req, res) => {
-    label(req.body.manifestFileName, req.body.labelName)
+    label(req.body.manifestFileName.trim(), req.body.labelName.trim())
     res.sendStatus(200);
 })
 
@@ -126,7 +127,7 @@ router.get('/new/repos(/*)?', (req, res) => {
 router.post('/new/repos(/*)?', (req, res) => {
     let urlArray = req.url.split('/');
     if (req.body.file) {
-        console.log('***' + req.body.fileName + '++++ ' + req.body.fileData)
+        console.log('***' + req.body.fileName.trim() + '++++ ' + req.body.fileData)
 
         let manifestPath = __dirname + '/repos/' + 'manifest' + urlArray[3] + '.json';
         manifestPath = replaceBackSlash(manifestPath)
@@ -139,7 +140,7 @@ router.post('/new/repos(/*)?', (req, res) => {
         for (let i = 3; i < urlArray.length; i++) {
             pathForFile += urlArray[i] + '/'
         }
-        pathForFile += req.body.fileName
+        pathForFile += req.body.fileName.trim()
         console.log('Path to file is ' + pathForFile)
         mkdirp(pathForFile, (err) => {
             if (err) res.sendStatus(500)
@@ -147,8 +148,9 @@ router.post('/new/repos(/*)?', (req, res) => {
                 let artifactFileName = calculateArtifactId(req.body.fileData);
                 let pathToFile = pathForFile + '/' + artifactFileName;
                 let pathToFileForManifestFile = pathForFile;
+                let fName = req.body.fileName.trim()
                 let fileObject = {
-                    fileName: req.body.fileName,
+                    fileName: fName,
                     relativePath: pathToFileForManifestFile,
                     artifactId: artifactFileName
                 }
@@ -164,7 +166,7 @@ router.post('/new/repos(/*)?', (req, res) => {
         for (let i = 3; i < urlArray.length; i++) {
             pathForFile += urlArray[i] + '/'
         }
-        pathForFile += req.body.fileName
+        pathForFile += req.body.fileName.trim()
         mkdirp(pathForFile, (err) => {
             if (err) res.sendStatus(500)
             res.sendStatus(200);
@@ -182,7 +184,7 @@ router.post('/new/repos(/*)?', (req, res) => {
 
 //CREATE NEW REPO
 router.post("/create/repo", (req, res) => {
-    let repoName = __dirname + "/repos/" + req.body.repoName;
+    let repoName = __dirname + "/repos/" + req.body.repoName.trim();
     fs.mkdir(repoName, (err) => {
         if (err) res.sendStatus(500);
         res.sendStatus(200);
@@ -194,7 +196,7 @@ router.post("/create/repo", (req, res) => {
 //CREATE FOLDER OR FILE IN CURRENT PATH
 router.post("/repos(/*)?", (req, res) => {
     if (req.body.fileName != null || req.body.fileName != null) {
-        let path = __dirname + req.url + "/" + req.body.fileName;
+        let path = __dirname + req.url + "/" + req.body.fileName.trim();
         console.log(path);
         fs.appendFile(path, req.body.fileData, (err) => {
             if (err) res.sendStatus(500);

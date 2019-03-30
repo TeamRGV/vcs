@@ -1,0 +1,29 @@
+{
+    "command": "checkin",
+    "sourceFolder": "branch1",
+    "destFolder": "C:/GitRepos/vcsNew/vcs/repos/branch1",
+    "DataTime": 1553923370892,
+    "fileNames": [
+        {
+            "fileName": "newfile.txt",
+            "relativePath": "C:/GitRepos/vcsNew/vcs/repos/branch1/abc/newfile.txt",
+            "artifactId": "6140-L11.txt"
+        },
+        {
+            "fileName": "file1.txt",
+            "relativePath": "C:/GitRepos/vcsNew/vcs/repos/branch1/def/file1.txt",
+            "artifactId": "8644-L16.txt"
+        },
+        {
+            "fileName": "file2.txt",
+            "relativePath": "C:/GitRepos/vcsNew/vcs/repos/branch1/def/file2.txt",
+            "artifactId": "19378-L35.txt"
+        },
+        {
+            "fileName": "file3.txt",
+            "relativePath": "C:/GitRepos/vcsNew/vcs/repos/branch1/def/file3.txt",
+            "artifactId": "6746-L14.txt"
+        }
+    ],
+    "labels": []
+}

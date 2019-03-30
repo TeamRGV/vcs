@@ -32,7 +32,7 @@ const createRepo = (sourcePath) => {
     //if folder doesnot exists then update it and update entries in manifest
     else {
         console.log('cant merge to main branch as we dont have a merge function yet !!')
-        // createManifestIfExists(destDir, sourceFolderName, sourcePath, manifestPath)
+
     }
 
 
@@ -42,30 +42,15 @@ const createRepo = (sourcePath) => {
 
 const checkOut = (manifestFileName, branchName, localRepoPath) => {
 
-    let destinationBranchPath = replaceBackSlash(__dirname + "/repos/" + branchName);
     let localBranchPath = localRepoPath + '/' + branchName
     if (!fs.existsSync(localBranchPath))
-        // fs.mkdir(localBranchPath, (error) => {
-        //     if (error) {
-        //         console.log(error)
-        //     } else {
-        //         console.log('branch created')
-
-        //     }
-
-        // });
-        createManifestForCheckout(branchName, destinationBranchPath, manifestFileName, localRepoPath)
+        createManifestForCheckout(branchName, manifestFileName, localRepoPath)
     //if folder doesnot exists then update it and update entries in manifest
     else {
         console.log('branch name already exists')
-        // createManifestIfExists(destDir, sourceFolderName, sourcePath, manifestPath)
+
     }
-    // ncp(manifestData.destFolder, destination, function (err) {
-    //     if (err) {
-    //         return console.error(err);
-    //     }
-    //     console.log('branch created');
-    // });
+
 
 }
 
@@ -107,18 +92,13 @@ const checkIn = (sourcePath) => {
     else {
         createManifest(destDir, sourceFolderName, sourcePath, manifestPath, 'checkin')
 
-        // createManifestIfExists(destDir, sourceFolderName, sourcePath, manifestPath)
+
     }
 }
 
+//function for adding label to manifest file
 const label = (manifestFileName, labelName, cwd) => {
-    // let repoName = cwd;
-    // for (let i = cwd.length - 1; i >= 0; i--) {
-    //     if (repoName.charAt(i) === '/' || repoName.charAt(i) === '\\') {
-    //         repoName = repoName.substring(i + 1, repoName.length );
-    //         break;
-    //     }
-    // }
+
     let manifestPath = replaceBackSlash(__dirname + "/repos/" + manifestFileName);
     let manifestString = fs.readFileSync(manifestPath);
     let manifestData = JSON.parse(manifestString);
@@ -130,7 +110,7 @@ const label = (manifestFileName, labelName, cwd) => {
 
 }
 
-
+//function to create manifest file on createRepo
 function createManifest(destDir, sourceFolderName, sourcePath, manifestPath, command) {
 
     let manifestData = {
@@ -152,8 +132,8 @@ function createManifest(destDir, sourceFolderName, sourcePath, manifestPath, com
     })
 }
 
-//function to update manifest file 
-function createManifestForCheckout(branchName, destinationBranchPath, manifestFileName, localRepoPath) {
+//function to create manifest for checkout
+function createManifestForCheckout(branchName, manifestFileName, localRepoPath) {
     let oldManifestPath = replaceBackSlash(__dirname + "/repos/" + manifestFileName);
     let oldManifestString = fs.readFileSync(oldManifestPath);
     let oldManifestData = JSON.parse(oldManifestString);
@@ -172,13 +152,8 @@ function createManifestForCheckout(branchName, destinationBranchPath, manifestFi
         } else {
             //copy files to local repo
             localRepoPath = localRepoPath + '/' + branchName;
-            // ncp(oldManifestData.destFolder, localRepoPath, function (err) {
-            //     if (err) {
-            //         return console.error(err);
-            //     }
-            //     console.log('done!');
-            // });
-            parseDirectoryForCheckOut(oldManifestData.destFolder, destinationBranchPath, newManifestPath, localRepoPath, oldManifestData)
+
+            parseDirectoryForCheckOut(newManifestPath, localRepoPath, oldManifestData)
         }
 
     })
@@ -217,14 +192,14 @@ function checkDirectory(file) {
 
 
 // make subfolders recursively
-function parseDirectoryForCheckOut(sourceDir, destDir, manifestPath, localRepoPath, oldManifestData) {
+function parseDirectoryForCheckOut(manifestPath, localRepoPath, oldManifestData) {
 
     oldManifestData.fileNames.forEach((fileData) => {
 
         let localPath = fileData.relativePath.split('/repos/');
         let fileToBeCreated = localRepoPath;
         let filePathOnLocal = localPath[1].split('/');
-        for (let i = 0; i < filePathOnLocal.length - 1; i++) {
+        for (let i = 1; i < filePathOnLocal.length - 1; i++) {
             fileToBeCreated = fileToBeCreated + '/' + filePathOnLocal[i]
         }
         mkdirp(fileToBeCreated, function (err) {
@@ -232,52 +207,26 @@ function parseDirectoryForCheckOut(sourceDir, destDir, manifestPath, localRepoPa
             let artifactPath = fileData.relativePath + '/' + fileData.artifactId;
             console.log('Creating file ---->' + fileToBeCreated)
             let fileContents = fs.readFileSync(artifactPath, 'utf-8');
-            fs.writeFileSync(fileToBeCreated + '/' + filePathOnLocal[filePathOnLocal.length - 1], fileContents)
+            let relativePathForLocalFile = fileToBeCreated + '/' + filePathOnLocal[filePathOnLocal.length - 1];
+            fs.writeFileSync(relativePathForLocalFile, fileContents)
+            console.log(manifestPath);
+            let manifestDataString = fs.readFileSync(manifestPath);
+            let manifestData = JSON.parse(manifestDataString);
+            console.log(manifestData);
+            let manifestFileData = {
+                fileName: filePathOnLocal[filePathOnLocal.length - 1],
+                relativePath: relativePathForLocalFile,
+                artifactId: fileData.artifactId
+            }
+            manifestData.fileNames.push(manifestFileData)
+            fs.writeFileSync(manifestPath, JSON.stringify(manifestData));
+
         });
 
 
 
     })
 
-    // let files = fs.readdirSync(sourceDir);
-    // let tempDir = destDir;
-    // let tempLocalDir = localRepoPath;
-    // for (file in files) {
-    //     let next = path.join(sourceDir, files[file]);
-    //     //if (fs.lstatSync(next).checkDirectory() == true) {
-    //     if (!checkDirectory(files[file])) {
-    //         // destDir = tempDir + "/" + files[file];
-    //         localRepoPath = tempLocalDir + "/" + files[file];
-    //         fs.mkdirSync(localRepoPath);
-    //         parseDirectoryForCheckOut(next, destDir, manifestPath, localRepoPath, oldManifestData);
-    //     } else {
-    //         let manifestString = fs.readFileSync(manifestPath);
-    //         let manifestData = JSON.parse(manifestString);
-    //         let localRepoPathArr = localRepoPath.split('/');
-    //         let fileObject = {
-    //             fileName: localRepoPathArr[localRepoPathArr.length - 1],
-    //             relativePath: localRepoPath,
-    //             artifactId: files[file]
-    //         };
-    //         manifestData.fileNames.push(fileObject);
-    //         //create manifest
-    //         fs.writeFileSync(manifestPath, JSON.stringify(manifestData))
-    //         //fs.createReadStream(sourceDir).pipe(fs.createWriteStream());
-    //         //fs.copyFile(sourceDir, destDir, (err) => {
-    //         //    if (err) throw err;
-    //         //});
-
-    //         //create file
-    //         // let fileData = fs.readFileSync(sourceDir + "/" + files[file]);
-    //         // let newFilePathLocal = localRepoPath + '/' + files[file];
-    //         // fs.writeFileSync(newFilePathLocal, fileData)
-
-
-
-
-
-    //     }
-    // }
 }
 
 //create a folder with the filename and save file with artifact id name
