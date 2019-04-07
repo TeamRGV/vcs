@@ -6,7 +6,7 @@ _____________________________________________________________
 
 VCS is a web application integrated with command line to create repository and work on it by team members. Here we cloned and implemented 3 of git functions create-repo, check-in(commit), check-out(branch). The team members can check out the repository by creating a new branch and modify files inside it. After modifications, the team members can check-in the changes into the repository.
 
-
+<img src="/Screenshot(81).png">
 
 # Create Repo - 
 Create a repository for the given project source tree(including all its files and their folder paths) using web application
