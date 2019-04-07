@@ -6,7 +6,7 @@ _____________________________________________________________
 
 VCS is a web application integrated with command line to create repository and work on it by team members. Here we cloned and implemented 3 of git functions create-repo, check-in(commit), check-out(branch). The team members can check out the repository by creating a new branch and modify files inside it. After modifications, the team members can check-in the changes into the repository.
 
-<img src="/Screenshots/Screenshot%20(81).png">
+<img src="/screenshots/Screenshot%20(81).png">
 
 # Create Repo - 
 Create a repository for the given project source tree(including all its files and their folder paths) using web application
@@ -19,13 +19,13 @@ date and time, and all the files present in the repository with their respective
 You can pull the repository from the server for making modifications by providing desired manifest file, branch name and destination 
 path. This will copy the required repository to the target folder(i.e., branch name) provided and each check-out will create a manifest file for recording the checkout.
 
-<img src="/Screenshots/Screenshot%20(97).png">
+<img src="/screenshots/Screenshot%20(97).png">
 
 # Check-in - 
 Push the changes made to the repository by using check in functionality. Each check-in will create a manifest file to keep track of repository being pushed with other details of source path, destination 
 path, date and time, and all modified files with their Artifact ID's.
 
-<img src="/Screenshots/Screenshot%20(102).png">
+<img src="/screenshots/Screenshot%20(102).png">
 
 # External requirements:
 Install Node on the system
@@ -90,7 +90,7 @@ _____________________________________________________________
 
  4. To further add folders and files, open the new repo created which will have a button to create file.
 
-<img src="/Screenshots/Screenshot%20(81).png">
+<img src="/screenshots/Screenshot%20(81).png">
 
 # Check-out -
 
@@ -127,18 +127,18 @@ To check-out, you can use either a command line or web application.
 # Display Repository -
   Select this option on home screen which will display you repositories on the web application.
   
-  <img src="/Screenshots/Screenshot%20(106).png">
+  <img src="/screenshots/Screenshot%20(106).png">
 
 # Manifest Files -
  Select this option on home screen which will display list of all the manifest files.
  
- <img src="/Screenshots/Screenshot%20(108).png">
+ <img src="/screenshots/Screenshot%20(108).png">
 
 # Add Label - 
  Add label to your manifest file in order to make it easier to remember and identify a particular snapshot of project. To add label, you can use either command
  line or web application.
  
- <img src="/Screenshots/Screenshot%20(110).png">
+ <img src="/screenshots/Screenshot%20(110).png">
  
 ### Using Command Line -
  1. To add label, you need to provide manifest file name and label.
