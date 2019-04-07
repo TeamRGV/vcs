@@ -13,7 +13,7 @@ Create a repository for the given project source tree(including all its files an
 or command Line. This will create a manifest file which will keep track of your source folder, destination folder, command used,
 date and time, and all the files present in the repository with their respective Artifact ID's.
 
-<img src="/Screenshots/Screenshot%20(82).png">
+<img src="/screenshots/Screenshot%20(82).png">
 
 # Check-out -
 You can pull the repository from the server for making modifications by providing desired manifest file, branch name and destination 
