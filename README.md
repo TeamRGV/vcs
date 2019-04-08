@@ -1,10 +1,7 @@
 # Version Control System
-(Team Project CECS 543 Rushabh Jaiswal, Gurpreet Singh, Vidul Verma)
-
-# Introduction:
 _____________________________________________________________
 
-VCS is a web application integrated with command line to create repository and work on it by team members. Here we cloned and implemented 3 of git functions create-repo, check-in(commit), check-out(branch). The team members can check out the repository by creating a new branch and modify files inside it. After modifications, the team members can check-in the changes into the repository.
+VCS is a web application integrated with command line to create repository and work on it by team members. Here we cloned and implemented 3 of git functions create-repo, check-in(commit), check-out(branch). The team members can check out the repository which creates a new branch and modify files inside it. After modifications, the team members can check-in the changes into the repository which is equivalent to git push. All the manifests are maintained with tree structure to rollback and for history.
 
 <img src="/screenshots/Screenshot%20(81).png">
 
