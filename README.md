@@ -94,6 +94,7 @@ To check-out, you can use either a command line or web application.
 
  2. Use command -> vcs checkout manifestFile branchName destinationPath
  
+<img src="/screenshots/Screenshot%20(117).png">
 
 ### Using Web Application-
 
@@ -107,9 +108,11 @@ To check-out, you can use either a command line or web application.
 
 # Check-in -
  To check-in the changes made, you can use either command line or web application.
- Using Command Line
+ ### Using Command Line
  1. To check-in, go to the source folder path in command line.
  2. Use command -> vcs checkin
+ 
+ <img src="/screenshots/Screenshot%20(119).png">
 
 ### Using Web Application -
  1. Select the check-in option from the home screen.
