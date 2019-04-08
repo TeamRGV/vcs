@@ -47,11 +47,6 @@ _____________________________________________________________
 	8b. Open browser and follow Execution OR use command line.
 
 
-# for visual studio code:
-1. Download the Visual Studio Code installer for Windows.
-2. Once it is downloaded, run the installer (VSCodeUserSetup-{version}.exe).
-3. By default, VS Code is installed under C:\users\{username}\AppData\Local\Programs\Microsoft VS Code.
-
 
 # Execution:
 
