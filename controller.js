@@ -13,7 +13,8 @@ var mkdirp = require('mkdirp');
 const {
     label,
     checkOut,
-    checkIn
+    checkIn,
+    mergeOut
 } = require("./gitcommands");
 
 
@@ -59,22 +60,16 @@ router.get('/', (req, res) => {
 })
 
 router.get('/manifests', (req, res) => {
-    let pathToRead = __dirname + '/repos';
-    fs.readdir(pathToRead, (err, files) => {
-        let manifestNames = []
-        files.forEach(file => {
-            if (file.includes(".")) manifestNames.push(file)
-        })
 
-        res.render('index', {
-            files: manifestNames
-        });
-
+    let manifestNames = readManifestNames();
+    res.render('index', {
+        files: manifestNames
     });
 })
 
 router.post('/checkin', (req, res) => {
-    checkIn(req.body.sourcePath);
+    //send true if trying to merge in else send false
+    checkIn(req.body.sourcePath, false);
     res.sendStatus(200)
 })
 
@@ -86,14 +81,14 @@ router.post('/checkout', (req, res) => {
 router.post('/createrepo', (req, res) => {
     let pathForFile = __dirname + "/repos/";
     pathForFile = replaceBackSlash(pathForFile)
-    let manifestPath = pathForFile + 'manifest' + req.body.fileName.trim() + '.json';
+    let manifestPath = pathForFile + req.body.fileName.trim() + 'manifest.json';
     pathForFile += req.body.fileName.trim()
     mkdirp(pathForFile, (err) => {
         let fName = req.body.fileName.trim()
         if (err) res.sendStatus(500)
         let manifestData = {
             'command': 'createrepo',
-            'sourceFolder': fName,
+            'sourceFolder': pathForFile,
             'destFolder': pathForFile,
             'DataTime': Date.now(),
             'fileNames': [],
@@ -129,7 +124,7 @@ router.post('/new/repos(/*)?', (req, res) => {
     if (req.body.file) {
         console.log('***' + req.body.fileName.trim() + '++++ ' + req.body.fileData)
 
-        let manifestPath = __dirname + '/repos/' + 'manifest' + urlArray[3] + '.json';
+        let manifestPath = __dirname + '/repos/' + urlArray[3] + 'manifest.json';
         manifestPath = replaceBackSlash(manifestPath)
         console.log(manifestPath)
         let manifestObject = JSON.parse(fs.readFileSync(manifestPath));
@@ -178,7 +173,26 @@ router.post('/new/repos(/*)?', (req, res) => {
 });
 
 
+router.post("/merge/mergeout", (req, res) => {
 
+    let sourceRepo = req.body.sourceRepo;
+    let targetRepo = req.body.targetRepo;
+
+    mergeOut(sourceRepo, targetRepo)
+
+    // let manifestFileNames = readManifestNames();
+
+    // manifestFileNames.forEach(file =>{
+    //     if(file.includes)
+    // })
+})
+
+router.post("/merge/mergein", (req, res) => {
+    let sourcePath = req.body.sourcePath;
+    //send true if trying to merge in else send false
+    checkIn(sourcePath, true);
+    res.sendStatus(200);
+})
 
 
 
@@ -242,6 +256,18 @@ function replaceBackSlash(dirName) {
             dest += destElem;
     })
     return dest;
+}
+
+function readManifestNames() {
+    let pathToRead = __dirname + '/repos';
+    let files = fs.readdirSync(pathToRead);
+    let manifestNames = []
+    files.forEach(file => {
+        if (file.includes(".")) manifestNames.push(file)
+    })
+    return manifestNames;
+
+
 }
 
 

@@ -17,7 +17,7 @@ const createRepo = (sourcePath) => {
 
     let sourceFolderName = sourceArray[sourceArray.length - 1]
     let destDir = dest + sourceFolderName;
-    let manifestPath = dest + 'manifest' + sourceFolderName + '.json';
+    let manifestPath = dest + sourceFolderName + 'manifest.json';
     //if folder doesnot exists then create it and make manifest
     if (!fs.existsSync(destDir))
         fs.mkdir(destDir, (error) => {
@@ -54,7 +54,135 @@ const checkOut = (manifestFileName, branchName, localRepoPath) => {
 
 }
 
-const checkIn = (sourcePath) => {
+const mergeOut = (source, target) => {
+
+    let grandmaManifest = findGrandma(source, target);
+
+    console.log(grandmaManifest);
+    let pathOfManifestFile = __dirname + '/repos/';
+    let sourceFileManifestData = JSON.parse(fs.readFileSync(pathOfManifestFile + source));
+    let targetFileManifestData = JSON.parse(fs.readFileSync(pathOfManifestFile + target));
+    let grandmaManifestData = JSON.parse(fs.readFileSync(pathOfManifestFile + grandmaManifest))
+
+    let targetFilesMap = new Map();
+    let sourceFilesMap = new Map();
+    let grandmaFileMap = new Map();
+
+    targetFileManifestData.fileNames.forEach(targetFile => {
+        targetFilesMap.set(targetFile.fileName, targetFile)
+
+    });
+
+    sourceFileManifestData.fileNames.forEach(sourceFile => {
+        sourceFilesMap.set(sourceFile.fileName, sourceFile)
+    })
+
+    grandmaManifestData.fileNames.forEach(grandmaFile => {
+        grandmaFileMap.set(grandmaFile.fileName, grandmaFile);
+    })
+
+
+
+    for (let sourceFileName of sourceFilesMap.keys()) {
+
+        let targetFileData = targetFilesMap.get(sourceFileName);
+        let sourceFileData = sourceFilesMap.get(sourceFileName);
+        if (targetFilesMap.has(sourceFileName) && targetFileData.artifactId == sourceFileData.artifactId) {
+            //file exists and artifact matches
+
+            // targetFilesMap.delete(sourceFileName);
+
+        } else if (targetFilesMap.has(sourceFileName)) {
+            //file exists but artifact different
+            let targetFolderName = targetFileManifestData.sourceFolder.split('/')
+            let fileToRemove = targetFileManifestData.sourceFolder + '/' + targetFileData.relativePath.split(targetFolderName[targetFolderName.length - 1])[1];
+            if (fs.existsSync(fileToRemove))
+                fs.unlinkSync(fileToRemove);
+
+            //create files
+
+            let targetFilePath = fileToRemove.substr(0, fileToRemove.lastIndexOf('/') + 1);
+
+            let targetFilePathMR = targetFilePath + sourceFileName.split('.')[0] + "_MR" + '.' + sourceFileName.split('.')[1];
+            let targetFilePathMT = targetFilePath + sourceFileName.split('.')[0] + "_MT" + '.' + sourceFileName.split('.')[1];
+
+            let fileContentsMR = fs.readFileSync(sourceFileData.relativePath + '/' + sourceFileData.artifactId, 'utf-8');
+            let fileContentsMT = fs.readFileSync(targetFileData.relativePath + '/' + targetFileData.artifactId, 'utf-8');
+
+
+            fs.writeFileSync(targetFilePathMR, fileContentsMR)
+            fs.writeFileSync(targetFilePathMT, fileContentsMT)
+
+            // targetFilesMap.delete(sourceFileName);
+        } else {
+            //file doesnt match
+            //DO NOTHING SINCE FILE ALREADY IN TARGET
+            let sourceName = source.split('manifest')[0];
+            let targetPath = targetFileManifestData.sourceFolder + sourceFileData.relativePath.split(sourceName)[1];
+
+            let fileContentsMR = fs.readFileSync(sourceFileData.relativePath + '/' + sourceFileData.artifactId, 'utf-8');
+
+            fs.writeFileSync(targetPath, fileContentsMR)
+        }
+    }
+
+    for (let grandmaFileName of grandmaFileMap.keys()) {
+
+        let targetFileData = targetFilesMap.get(grandmaFileName);
+        let grandmaFileData = grandmaFileMap.get(grandmaFileName);
+        if (targetFilesMap.has(grandmaFileName) && targetFileData.artifactId == grandmaFileData.artifactId) {
+            //file exists and artifact matches
+
+            // targetFilesMap.delete(sourceFileName);
+
+        } else if (targetFilesMap.has(grandmaFileName)) {
+            //file exists but artifact different
+            let targetFolderName = targetFileManifestData.sourceFolder.split('/')
+            let fileToRemove = targetFileManifestData.sourceFolder + '/' + targetFileData.relativePath.split(targetFolderName[targetFolderName.length - 1])[1];
+
+            if (!sourceFilesMap.has(grandmaFileName)) {
+
+                fs.unlinkSync(fileToRemove);
+            }
+
+
+            //create files
+
+            let targetFilePath = fileToRemove.substr(0, fileToRemove.lastIndexOf('/') + 1);
+
+            let targetFilePathMG = targetFilePath + grandmaFileName.split('.')[0] + "_MG" + '.' + grandmaFileName.split('.')[1];
+            let targetFilePathMT = targetFilePath + grandmaFileName.split('.')[0] + "_MT" + '.' + grandmaFileName.split('.')[1];
+
+            let fileContentsMG = fs.readFileSync(grandmaFileData.relativePath + '/' + grandmaFileData.artifactId, 'utf-8');
+            let fileContentsMT = fs.readFileSync(targetFileData.relativePath + '/' + targetFileData.artifactId, 'utf-8');
+            console.log(')))))))))')
+            console.log(targetFilePathMG)
+            fs.writeFileSync(targetFilePathMG, fileContentsMG)
+            fs.appendFileSync(targetFilePathMT, fileContentsMT)
+
+            // targetFilesMap.delete(sourceFileName);
+        } else {
+            //file doesnt match
+            //DO NOTHING SINCE FILE ALREADY IN TARGET
+
+            let grandmaName = grandmaManifest.split('manifest')[0];
+            let targetPath = targetFileManifestData.sourceFolder + grandmaFileData.relativePath.split(grandmaName)[1];
+
+            let fileContentsMG = fs.readFileSync(grandmaFileData.relativePath + '/' + grandmaFileData.artifactId, 'utf-8');
+
+            fs.writeFileSync(targetPath, fileContentsMG)
+
+        }
+    }
+
+
+
+
+
+}
+
+const checkIn = (sourcePath, isMergein) => {
+
 
     let dest = replaceBackSlash(__dirname + "/repos/");
     //get the source path and convert it to array to get the reponame
@@ -67,13 +195,23 @@ const checkIn = (sourcePath) => {
 
         sourceFolderName = sourceArray[sourceArray.length - 1]
 
-        manifestPath = dest + 'manifestcommit' + Date.now() + sourceFolderName + '.json';
+        if (isMergein) {
+            manifestPath = dest + sourceFolderName + 'manifestmergein' + Date.now() + '.json';
+        } else {
+            manifestPath = dest + sourceFolderName + 'manifestcheckin' + Date.now() + '.json';
+        }
+
     } else {
         sourceArray = sourcePath.split('/');
 
         sourceFolderName = sourceArray[sourceArray.length - 1]
 
-        manifestPath = dest + 'manifestcommit' + Date.now() + sourceFolderName + '.json';
+        if (isMergein) {
+            manifestPath = dest + sourceFolderName + 'manifestmergein' + Date.now() + '.json';
+        } else {
+            manifestPath = dest + sourceFolderName + 'manifestcheckin' + Date.now() + '.json';
+        }
+        // manifestPath = dest + sourceFolderName + 'manifestcheckin' + Date.now() + '.json';
     }
     destDir = dest + sourceFolderName;
 
@@ -84,13 +222,22 @@ const checkIn = (sourcePath) => {
 
             } else {
                 console.log('changes pushed to remote repository')
-                createManifest(destDir, sourceFolderName, sourcePath, manifestPath, 'checkin')
+                if (isMergein) {
+                    createManifest(destDir, sourceFolderName, sourcePath, manifestPath, 'mergein')
+                } else {
+                    createManifest(destDir, sourceFolderName, sourcePath, manifestPath, 'checkin')
+                }
+
             }
 
         });
     //if folder doesnot exists then update it and update entries in manifest
     else {
-        createManifest(destDir, sourceFolderName, sourcePath, manifestPath, 'checkin')
+        if (isMergein) {
+            createManifest(destDir, sourceFolderName, sourcePath, manifestPath, 'mergein')
+        } else {
+            createManifest(destDir, sourceFolderName, sourcePath, manifestPath, 'checkin')
+        }
 
 
     }
@@ -115,7 +262,7 @@ function createManifest(destDir, sourceFolderName, sourcePath, manifestPath, com
 
     let manifestData = {
         'command': command,
-        'sourceFolder': sourceFolderName,
+        'sourceFolder': replaceBackSlash(sourcePath),
         'destFolder': destDir,
         'DataTime': Date.now(),
         'fileNames': [],
@@ -137,12 +284,15 @@ function createManifestForCheckout(branchName, manifestFileName, localRepoPath) 
     let oldManifestPath = replaceBackSlash(__dirname + "/repos/" + manifestFileName);
     let oldManifestString = fs.readFileSync(oldManifestPath);
     let oldManifestData = JSON.parse(oldManifestString);
-    let newManifestPath = replaceBackSlash(__dirname + "/repos/" + "manifestcheckout" + branchName + ".json");
+    let newManifestPath = replaceBackSlash(__dirname + "/repos/" + branchName + "manifestcheckout" + ".json");
     let manifestData = {
         'command': 'checkout',
-        'sourceFolder': branchName,
         'destFolder': localRepoPath,
+        'sourceFolder': oldManifestData.sourceFolder,
         'DataTime': Date.now(),
+        'branchName': branchName,
+        'manifestFileName': manifestFileName,
+        'localRepoPath': localRepoPath,
         'fileNames': [],
         'labels': []
     };
@@ -159,6 +309,21 @@ function createManifestForCheckout(branchName, manifestFileName, localRepoPath) 
     })
 }
 
+function findGrandma(sourceManifestName, targetManifestName) {
+
+    // let manifestNames = readManifestNames();
+
+    // let sourceCheckout = sourceManifestName.split('manifestcheckin')[0] + 'manifestcheckout.json';
+    let targetManifestTree = [];
+
+    getParentManifest(targetManifestName, targetManifestTree);
+    console.log(targetManifestTree)
+    let grandMa = getParentManifestOnlyCommon(sourceManifestName, targetManifestTree);
+
+    return grandMa;
+
+
+}
 // make subfolders recursively
 function parseDirectory(sourceDir, destDir, manifestPath) {
 
@@ -183,6 +348,33 @@ function parseDirectory(sourceDir, destDir, manifestPath) {
 
         }
     }
+}
+
+function getParentManifest(manifestFileName, targetManifests) {
+    let remotePath = __dirname + '/repos/';
+    let targetCheckout = manifestFileName.split('manifestcheckin')[0] + 'manifestcheckout.json';
+    let targetCheckoutData = JSON.parse(fs.readFileSync(remotePath + targetCheckout));
+    if (targetCheckoutData.manifestFileName.includes('manifest.json')) {
+        targetManifests.push(targetCheckoutData.manifestFileName);
+        return;
+    }
+    targetManifests.push(targetCheckoutData.manifestFileName);
+    getParentManifest(targetCheckoutData.manifestFileName, targetManifests)
+}
+
+function getParentManifestOnlyCommon(manifestFileName, targetManifests) {
+    let remotePath = __dirname + '/repos/';
+    let targetCheckout = manifestFileName.split('manifestcheckin')[0] + 'manifestcheckout.json';
+    let targetCheckoutData = JSON.parse(fs.readFileSync(remotePath + targetCheckout));
+
+    console.log(targetCheckoutData.manifestFileName)
+
+    if (targetCheckoutData.manifestFileName.includes('manifest.json') || targetManifests.includes(targetCheckoutData.manifestFileName)) {
+
+        return targetCheckoutData.manifestFileName;
+    }
+    return getParentManifestOnlyCommon(targetCheckoutData.manifestFileName, targetManifests)
+
 }
 
 function checkDirectory(file) {
@@ -291,9 +483,22 @@ function replaceBackSlash(dirName) {
     return dest;
 }
 
+function readManifestNames() {
+    let pathToRead = __dirname + '/repos';
+    let files = fs.readdirSync(pathToRead);
+    let manifestNames = []
+    files.forEach(file => {
+        if (file.includes(".")) manifestNames.push(file)
+    })
+    return manifestNames;
+
+
+}
+
 module.exports = {
     createRepo,
     label,
     checkOut,
-    checkIn
+    checkIn,
+    mergeOut
 }
