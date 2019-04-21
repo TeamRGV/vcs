@@ -67,6 +67,11 @@ router.get('/manifests', (req, res) => {
     });
 })
 
+router.get('/manifestnames', (req, res) => {
+    let manifestNames = readManifestNames();
+    res.json(manifestNames);
+})
+
 router.post('/checkin', (req, res) => {
     //send true if trying to merge in else send false
     checkIn(req.body.sourcePath, false);

@@ -5,14 +5,14 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title></title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.css" />
   <link href="/css/style.css" rel="stylesheet" />
   <style>
     .alert {
       padding: 10px;
       background-color: #d3d3d3;
       /* Red */
-      color: white;
+      color: #000000;
       text-align: center;
       margin: 0 auto;
       display: none;
@@ -85,7 +85,7 @@
       <nav style="background-color: #000" class="navbar navbar-expand-md sticky-top">
         <div class="container-fluid">
           <div id="path"
-            style="color: white; font-weight: 700; font-size: 20px; margin: 0 auto; font-family:sans-serif;">
+            style="color: #7EC0EE; font-weight: 700; font-size: 20px; margin: 0 auto; font-family:sans-serif;">
             <h1>VCS Home</h1>
           </div>
         </div>
@@ -183,11 +183,11 @@
       <a href="#"></a>
       <div class="card-body">
         <div class="row">
-          <h5 style="margin:0 80px;">Merge In</h5>
+          <h5 style="margin:0 auto;">Merge-out</h5>
           <p style="margin:0 auto; padding: 20px; text-align: center;">
-            merge in files
+            Merge two branches to one i.e target
           </p>
-          <a href="#" class="btn btn-primary proceed" data-toggle="modal" data-target="#myModal4"
+          <a href="#" class="btn btn-primary proceed" data-toggle="modal" data-target="#merge_out_modal"
             style="margin: 0 auto;">Proceed</a>
         </div>
       </div>
@@ -197,15 +197,29 @@
       <a href="#"></a>
       <div class="card-body">
         <div class="row">
-          <h5 style="margin:0px 75px;">Merge Out</h5>
+          <h5 style="margin:0 auto;">Merge-in</h5>
           <p style="margin:0 auto; padding: 20px; text-align: center;">
-            merge out files
+            Push merged out files to remote repository
           </p>
-          <a href="#" class="btn btn-primary proceed" data-toggle="modal" data-target="#myModal5"
+          <a href="#" class="btn btn-primary proceed" data-toggle="modal" data-target="#merge_in_modal"
             style="margin: 0 auto;">Proceed</a>
         </div>
       </div>
     </div>
+
+    <!-- <div class=" container" style=" width: 18rem; min-height: 10px; margin-top:30px;">
+      <a href="#"></a>
+      <div class="card-body">
+        <div class="row">
+          <h5 style="margin:0 auto;"></h5>
+          <p style="margin:0 auto; padding: 20px; text-align: center;">
+
+          </p>
+          <a href="#" class="btn btn-primary proceed" data-toggle="modal" data-target="" style="margin: 0 auto;"></a>
+        </div>
+      </div>
+    </div> -->
+
 
 
   </div>
@@ -248,8 +262,10 @@
             placeholder="Enter branch name..." size="50" /><br /><br />
           <input id="checkout_path" class="form-control input-lg" id="input-lg" type="text"
             placeholder="Enter local repo path" size="50" /><br /><br />
-          <input id="checkout_manifest" class="form-control input-lg" id="input-lg" type="text"
-            placeholder="Enter manifest file name" size="50" />
+          <select class="selectpicker" id="checkout_manifests">
+            <option selected disabled> Choose a manifest file for checkout </option>
+
+          </select>
         </div>
         <div class="modal-footer">
           <button id="checkout_btn" onclick="checkout()" type="button" class="btn btn-primary">Submit</button>
@@ -269,8 +285,10 @@
           </button>
         </div>
         <div class="modal-body">
-          <input id="label_manifest" class="form-control input-lg" id="input-lg" type="text"
-            placeholder="Enter manifest file name" size="50" /><br /><br />
+          <select class="selectpicker" id="label_manifests">
+            <option selected disabled> Choose a manifest file to add label</option>
+
+          </select><br /><br />
           <input id="label_label" class="form-control input-lg" id="input-lg" type="text" placeholder="Enter Label.."
             size="50" /><br /><br />
         </div>
@@ -281,49 +299,61 @@
     </div>
   </div>
 
- <!-- Modal -->
- <div class="modal fade" id="myModal4" role="dialog">
-  <div class="modal-dialog">
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Merge In</h4>
-        <button type="button" class="close" data-dismiss="modal">
-          &times;
-        </button>
-      </div>
-      <div class="modal-body">
-        <input id="checkin_sourcefolder" class="form-control input-lg" id="input-lg" type="text"
-          placeholder="Enter complete path for source folder" size="50" /><br /><br />
-      </div>
-      <div class="modal-footer">
-        <button id="checkin_btn" onclick="checkin()" type="button" class="btn btn-primary">Submit</button>
-      </div>
-    </div>
-  </div>
-</div>
 
- <!-- Modal -->
- <div class="modal fade" id="myModal5" role="dialog">
-  <div class="modal-dialog">
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Merge Out</h4>
-        <button type="button" class="close" data-dismiss="modal">
-          &times;
-        </button>
-      </div>
-      <div class="modal-body">
-        <input id="checkin_sourcefolder" class="form-control input-lg" id="input-lg" type="text"
-          placeholder="Enter complete path for source folder" size="50" /><br /><br />
-      </div>
-      <div class="modal-footer">
-        <button id="checkin_btn" onclick="checkin()" type="button" class="btn btn-primary">Submit</button>
+
+  <!-- Merge-out modal -->
+  <div class="modal fade" id="merge_out_modal" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Merge Out</h4>
+          <button type="button" class="close" data-dismiss="modal">
+            &times;
+          </button>
+        </div>
+        <div class="modal-body">
+
+          <select class="selectpicker" id="mergeout_manifests_source">
+            <option selected disabled> Choose a source manifest file </option>
+
+          </select>
+          <br><br>
+          <select class="selectpicker" id="mergeout_manifests_target">
+            <option selected disabled> Choose a target manifest file </option>
+
+          </select>
+          <br><br>
+
+        </div>
+        <div class="modal-footer">
+          <button id="checkin_btn" onclick="mergeout()" type="button" class="btn btn-primary">Submit</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
+
+  <!-- mergein modal -->
+  <div class="modal fade" id="merge_in_modal" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Merge In</h4>
+          <button type="button" class="close" data-dismiss="modal">
+            &times;
+          </button>
+        </div>
+        <div class="modal-body">
+          <input id="mergein_sourcefolder" class="form-control input-lg" id="input-lg" type="text"
+            placeholder="Enter complete path for source folder" size="50" /><br /><br />
+        </div>
+        <div class="modal-footer">
+          <button id="mergein_btn" onclick="mergein()" type="button" class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
 
