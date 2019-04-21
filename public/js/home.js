@@ -7,19 +7,35 @@ $(document).ready(() => {
             if (data.length > 0) {
                 let mergeoutManifestsSource = document.getElementById('mergeout_manifests_source')
                 data.forEach(elem => {
-                    mergeoutManifestsSource.options[mergeoutManifestsSource.options.length] = new Option(elem, elem);
+                    let option = document.createElement("option");
+                    option.value = elem;
+                    option.text = elem;
+                    mergeoutManifestsSource.appendChild(option);
+
                 })
                 let mergeoutManifestsTarget = document.getElementById('mergeout_manifests_target')
                 data.forEach(elem => {
-                    mergeoutManifestsTarget.options[mergeoutManifestsTarget.options.length] = new Option(elem, elem);
+                    let option = document.createElement("option");
+                    option.value = elem;
+                    option.text = elem;
+                    mergeoutManifestsTarget.appendChild(option);
+                    // mergeoutManifestsTarget.options[mergeoutManifestsTarget.options.length] = new Option(elem, elem);
                 })
                 let checkoutManifests = document.getElementById('checkout_manifests')
                 data.forEach(elem => {
-                    checkoutManifests.options[checkoutManifests.options.length] = new Option(elem, elem);
+                    let option = document.createElement("option");
+                    option.value = elem;
+                    option.text = elem;
+                    checkoutManifests.appendChild(option);
+                    // checkoutManifests.options[checkoutManifests.options.length] = new Option(elem, elem);
                 })
                 let labelManifests = document.getElementById('label_manifests')
                 data.forEach(elem => {
-                    labelManifests.options[labelManifests.options.length] = new Option(elem, elem);
+                    let option = document.createElement("option");
+                    option.value = elem;
+                    option.text = elem;
+                    labelManifests.appendChild(option);
+                    // labelManifests.options[labelManifests.options.length] = new Option(elem, elem);
                 })
 
             }
