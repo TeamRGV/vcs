@@ -184,7 +184,7 @@ router.post("/merge/mergeout", (req, res) => {
     let targetRepo = req.body.targetRepo;
 
     mergeOut(sourceRepo, targetRepo)
-
+    res.sendStatus(200);
     // let manifestFileNames = readManifestNames();
 
     // manifestFileNames.forEach(file =>{

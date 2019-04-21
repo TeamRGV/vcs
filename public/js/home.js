@@ -57,8 +57,8 @@ function checkout() {
 
 
 function mergeout() {
-    let sourceManifestElem = document.getElementById('mergeout_manifests_source').value;
-    let targetManifestElem = document.getElementById('mergeout_manifests_target').value;
+    let sourceManifestElem = document.getElementById('mergeout_manifests_source');
+    let targetManifestElem = document.getElementById('mergeout_manifests_target');
     let sourceRepo = sourceManifestElem.options[sourceManifestElem.selectedIndex].value;
     let targetRepo = targetManifestElem.options[targetManifestElem.selectedIndex].value;
     let data = {
@@ -91,7 +91,7 @@ function mergein() {
         contentType: 'application/json',
         success: function (data) {
             document.getElementById('mergein_sourcefolder').value = "";
-            $('#merge_in_sourcefolder').modal('hide');
+            $('#merge_in_modal').modal('hide');
             document.getElementById('alert').style.display = "block";
             let sourceArr = sourcePath.split('/');
             document.getElementById('alertmessage').innerHTML = "Merged in the remote repository for repo named " + sourceArr[sourceArr.length - 1];
@@ -140,4 +140,3 @@ function createlabel() {
         }
     });
 }
-
