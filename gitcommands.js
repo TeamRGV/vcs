@@ -202,7 +202,7 @@ const checkIn = (sourcePath, isMergein) => {
         sourceFolderName = sourceArray[sourceArray.length - 1]
         sourceFolderNameManifest = sourceArray[sourceArray.length - 2];
         if (isMergein) {
-            manifestPath = dest + sourceFolderName + 'manifestmergein' + Date.now() + '.json';
+            manifestPath = dest + sourceFolderNameManifest + 'manifestmergein' + Date.now() + '.json';
         } else {
             manifestPath = dest + sourceFolderNameManifest + 'manifestcheckin' + Date.now() + '.json';
         }
@@ -213,7 +213,7 @@ const checkIn = (sourcePath, isMergein) => {
         sourceFolderName = sourceArray[sourceArray.length - 1]
         sourceFolderNameManifest = sourceArray[sourceArray.length - 2];
         if (isMergein) {
-            manifestPath = dest + sourceFolderName + 'manifestmergein' + Date.now() + '.json';
+            manifestPath = dest + sourceFolderNameManifest + 'manifestmergein' + Date.now() + '.json';
         } else {
             manifestPath = dest + sourceFolderNameManifest + 'manifestcheckin' + Date.now() + '.json';
         }
