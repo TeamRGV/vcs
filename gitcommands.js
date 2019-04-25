@@ -42,8 +42,8 @@ const createRepo = (sourcePath) => {
 
 const checkOut = (manifestFileName, branchName, localRepoPath) => {
 
-    let localBranchPath = localRepoPath + '/' + branchName
-    if (!fs.existsSync(localBranchPath))
+    localRepoPath = localRepoPath + '/' + branchName + '/' + manifestFileName.split('manifest')[0];
+    if (!fs.existsSync(localRepoPath))
         createManifestForCheckout(branchName, manifestFileName, localRepoPath)
     //if folder doesnot exists then update it and update entries in manifest
     else {
@@ -63,6 +63,12 @@ const mergeOut = (source, target) => {
     let sourceFileManifestData = JSON.parse(fs.readFileSync(pathOfManifestFile + source));
     let targetFileManifestData = JSON.parse(fs.readFileSync(pathOfManifestFile + target));
     let grandmaManifestData = JSON.parse(fs.readFileSync(pathOfManifestFile + grandmaManifest))
+
+    let sourcePathArray = sourceFileManifestData.sourceFolder.split('/');
+    let sourceBrachName = sourcePathArray[sourcePathArray.length - 1];
+
+    let grandMaPathArray = grandmaManifestData.sourceFolder.split('/');
+    let grandMaBrachName = sourcePathArray[grandMaPathArray.length - 1];
 
     let targetFilesMap = new Map();
     let sourceFilesMap = new Map();
@@ -116,12 +122,12 @@ const mergeOut = (source, target) => {
             // targetFilesMap.delete(sourceFileName);
         } else {
             //file doesnt match
-            //DO NOTHING SINCE FILE ALREADY IN TARGET
-            let sourceName = source.split('manifest')[0];
-            let targetPath = targetFileManifestData.sourceFolder + sourceFileData.relativePath.split(sourceName)[1];
+
+            // let sourceName = source.split('manifest')[0];
+            let targetPath = targetFileManifestData.sourceFolder + sourceFileData.relativePath.split(sourceBrachName)[1];
 
             let fileContentsMR = fs.readFileSync(sourceFileData.relativePath + '/' + sourceFileData.artifactId, 'utf-8');
-
+            console.log(targetPath)
             fs.writeFileSync(targetPath, fileContentsMR)
         }
     }
@@ -155,8 +161,7 @@ const mergeOut = (source, target) => {
 
             let fileContentsMG = fs.readFileSync(grandmaFileData.relativePath + '/' + grandmaFileData.artifactId, 'utf-8');
             let fileContentsMT = fs.readFileSync(targetFileData.relativePath + '/' + targetFileData.artifactId, 'utf-8');
-            console.log(')))))))))')
-            console.log(targetFilePathMG)
+
             fs.writeFileSync(targetFilePathMG, fileContentsMG)
             fs.appendFileSync(targetFilePathMT, fileContentsMT)
 
@@ -165,8 +170,8 @@ const mergeOut = (source, target) => {
             //file doesnt match
             //DO NOTHING SINCE FILE ALREADY IN TARGET
 
-            let grandmaName = grandmaManifest.split('manifest')[0];
-            let targetPath = targetFileManifestData.sourceFolder + grandmaFileData.relativePath.split(grandmaName)[1];
+            // let grandmaName = grandmaManifest.split('manifest')[0];
+            let targetPath = targetFileManifestData.sourceFolder + grandmaFileData.relativePath.split(grandMaBrachName)[1];
 
             let fileContentsMG = fs.readFileSync(grandmaFileData.relativePath + '/' + grandmaFileData.artifactId, 'utf-8');
 
@@ -188,28 +193,29 @@ const checkIn = (sourcePath, isMergein) => {
     //get the source path and convert it to array to get the reponame
     let sourceArray = []
     let sourceFolderName;
+    let sourceFolderNameManifest;
     let destDir;
     let manifestPath;
     if (sourcePath.includes('\\')) {
         sourceArray = sourcePath.split('\\');
 
         sourceFolderName = sourceArray[sourceArray.length - 1]
-
+        sourceFolderNameManifest = sourceArray[sourceArray.length - 2];
         if (isMergein) {
             manifestPath = dest + sourceFolderName + 'manifestmergein' + Date.now() + '.json';
         } else {
-            manifestPath = dest + sourceFolderName + 'manifestcheckin' + Date.now() + '.json';
+            manifestPath = dest + sourceFolderNameManifest + 'manifestcheckin' + Date.now() + '.json';
         }
 
     } else {
         sourceArray = sourcePath.split('/');
 
         sourceFolderName = sourceArray[sourceArray.length - 1]
-
+        sourceFolderNameManifest = sourceArray[sourceArray.length - 2];
         if (isMergein) {
             manifestPath = dest + sourceFolderName + 'manifestmergein' + Date.now() + '.json';
         } else {
-            manifestPath = dest + sourceFolderName + 'manifestcheckin' + Date.now() + '.json';
+            manifestPath = dest + sourceFolderNameManifest + 'manifestcheckin' + Date.now() + '.json';
         }
         // manifestPath = dest + sourceFolderName + 'manifestcheckin' + Date.now() + '.json';
     }
@@ -301,7 +307,7 @@ function createManifestForCheckout(branchName, manifestFileName, localRepoPath) 
             console.log(error);
         } else {
             //copy files to local repo
-            localRepoPath = localRepoPath + '/' + branchName;
+            // localRepoPath = localRepoPath + '/' + branchName;
 
             parseDirectoryForCheckOut(newManifestPath, localRepoPath, oldManifestData)
         }
