@@ -139,7 +139,7 @@ To check-out, you can use either a command line or web application.
  1. To add label, you need to provide manifest file name and label.
  2. Use command -> vcs label manifestFileName label
  
- <img src="/screenshots/label.png">
+ 
 
 ### Using Web Application -
  1. Select Add Label option from the home screen.
