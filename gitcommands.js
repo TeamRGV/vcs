@@ -41,8 +41,10 @@ const createRepo = (sourcePath) => {
 }
 
 const checkOut = (manifestFileName, branchName, localRepoPath) => {
-
-    localRepoPath = localRepoPath + '/' + branchName + '/' + manifestFileName.split('manifest')[0];
+    let manifestPath = __dirname + "/repos/" + manifestFileName
+    let manifestData = JSON.parse(fs.readFileSync(manifestPath))
+    let sourceFolderArray = manifestData.sourceFolder.split('/')
+    localRepoPath = localRepoPath + '/' + branchName + '/' + sourceFolderArray[sourceFolderArray.length - 1];
     if (!fs.existsSync(localRepoPath))
         createManifestForCheckout(branchName, manifestFileName, localRepoPath)
     //if folder doesnot exists then update it and update entries in manifest
@@ -58,17 +60,25 @@ const mergeOut = (source, target) => {
 
     let grandmaManifest = findGrandma(source, target);
 
-    console.log(grandmaManifest);
+
     let pathOfManifestFile = __dirname + '/repos/';
     let sourceFileManifestData = JSON.parse(fs.readFileSync(pathOfManifestFile + source));
     let targetFileManifestData = JSON.parse(fs.readFileSync(pathOfManifestFile + target));
     let grandmaManifestData = JSON.parse(fs.readFileSync(pathOfManifestFile + grandmaManifest))
 
     let sourcePathArray = sourceFileManifestData.sourceFolder.split('/');
-    let sourceBrachName = sourcePathArray[sourcePathArray.length - 1];
+    let sourceBrachName = sourcePathArray[sourcePathArray.length - 2];
 
     let grandMaPathArray = grandmaManifestData.sourceFolder.split('/');
-    let grandMaBrachName = sourcePathArray[grandMaPathArray.length - 1];
+    let grandMaBrachName;
+    if (grandmaManifest.includes('checkin')) {
+
+        grandMaBrachName = sourcePathArray[grandMaPathArray.length - 2];
+    } else {
+        grandMaBrachName = sourcePathArray[grandMaPathArray.length - 1];
+    }
+
+
 
     let targetFilesMap = new Map();
     let sourceFilesMap = new Map();
@@ -90,7 +100,7 @@ const mergeOut = (source, target) => {
 
 
     for (let sourceFileName of sourceFilesMap.keys()) {
-
+        console.log(sourceFileName)
         let targetFileData = targetFilesMap.get(sourceFileName);
         let sourceFileData = sourceFilesMap.get(sourceFileName);
         if (targetFilesMap.has(sourceFileName) && targetFileData.artifactId == sourceFileData.artifactId) {
@@ -116,24 +126,26 @@ const mergeOut = (source, target) => {
             let fileContentsMT = fs.readFileSync(targetFileData.relativePath + '/' + targetFileData.artifactId, 'utf-8');
 
 
-            fs.writeFileSync(targetFilePathMR, fileContentsMR)
-            fs.writeFileSync(targetFilePathMT, fileContentsMT)
+            fs.writeFileSync(targetFilePathMR, fileContentsMR, { mode: 0o755 })
+            fs.writeFileSync(targetFilePathMT, fileContentsMT, { mode: 0o755 })
 
             // targetFilesMap.delete(sourceFileName);
         } else {
-            //file doesnt match
+            //target doesnt have files in source folder
 
             // let sourceName = source.split('manifest')[0];
-            let targetPath = targetFileManifestData.sourceFolder + sourceFileData.relativePath.split(sourceBrachName)[1];
+            let sourceFolderArray = sourceFileManifestData.sourceFolder.split('/')
+            let targetPath = targetFileManifestData.sourceFolder + sourceFileData.relativePath.split(sourceFolderArray[sourceFolderArray.length - 1])[1];
 
             let fileContentsMR = fs.readFileSync(sourceFileData.relativePath + '/' + sourceFileData.artifactId, 'utf-8');
-            console.log(targetPath)
+            console.log("target path is yyyyyyyy" + targetPath)
             fs.writeFileSync(targetPath, fileContentsMR)
         }
     }
 
+    console.log("grandmafilemap ((((((((((((")
     for (let grandmaFileName of grandmaFileMap.keys()) {
-
+        console.log(grandmaFileName)
         let targetFileData = targetFilesMap.get(grandmaFileName);
         let grandmaFileData = grandmaFileMap.get(grandmaFileName);
         if (targetFilesMap.has(grandmaFileName) && targetFileData.artifactId == grandmaFileData.artifactId) {
@@ -144,10 +156,12 @@ const mergeOut = (source, target) => {
         } else if (targetFilesMap.has(grandmaFileName)) {
             //file exists but artifact different
             let targetFolderName = targetFileManifestData.sourceFolder.split('/')
-            let fileToRemove = targetFileManifestData.sourceFolder + '/' + targetFileData.relativePath.split(targetFolderName[targetFolderName.length - 1])[1];
+            let fileToRemove = targetFileManifestData.sourceFolder + targetFileData.relativePath.split(targetFolderName[targetFolderName.length - 1])[1];
+            console.log(">>>>>>>>>File to remove " + fileToRemove)
+            let sourceFileData = sourceFilesMap.get(grandmaFileName);
 
-            if (!sourceFilesMap.has(grandmaFileName)) {
-
+            if (!sourceFilesMap.has(grandmaFileName) || (sourceFileData != undefined && sourceFileData.artifactId == targetFileData.artifactId)) {
+                console.log("===============" + " here")
                 fs.unlinkSync(fileToRemove);
             }
 
@@ -163,18 +177,23 @@ const mergeOut = (source, target) => {
             let fileContentsMT = fs.readFileSync(targetFileData.relativePath + '/' + targetFileData.artifactId, 'utf-8');
 
             fs.writeFileSync(targetFilePathMG, fileContentsMG)
-            fs.appendFileSync(targetFilePathMT, fileContentsMT)
+            if (!fs.existsSync(targetFilePathMT))
+                fs.appendFileSync(targetFilePathMT, fileContentsMT)
 
-            // targetFilesMap.delete(sourceFileName);
+
         } else {
-            //file doesnt match
-            //DO NOTHING SINCE FILE ALREADY IN TARGET
+            //target doesnt have files in grandma
+
 
             // let grandmaName = grandmaManifest.split('manifest')[0];
-            let targetPath = targetFileManifestData.sourceFolder + grandmaFileData.relativePath.split(grandMaBrachName)[1];
+
+            // let targetPath = targetFileManifestData.sourceFolder + grandmaFileData.relativePath.split(grandMaBrachName)[1];
+
+            let grandmaFolderArray = grandmaManifestData.sourceFolder.split('/')
+            let targetPath = targetFileManifestData.sourceFolder + grandmaFileData.relativePath.split(grandmaFolderArray[grandmaFolderArray.length - 1])[1];
 
             let fileContentsMG = fs.readFileSync(grandmaFileData.relativePath + '/' + grandmaFileData.artifactId, 'utf-8');
-
+            console.log("target path is yyyyyyyy" + targetPath)
             fs.writeFileSync(targetPath, fileContentsMG)
 
         }
@@ -259,7 +278,7 @@ const label = (manifestFileName, labelName, cwd) => {
 
     manifestData.labels.push(labelName);
 
-    fs.writeFileSync(manifestPath, JSON.stringify(manifestData))
+    fs.writeFileSync(manifestPath, JSON.stringify(manifestData), { mode: 0o755 })
 
 }
 
@@ -323,7 +342,7 @@ function findGrandma(sourceManifestName, targetManifestName) {
     let targetManifestTree = [];
 
     getParentManifest(targetManifestName, targetManifestTree);
-    console.log(targetManifestTree)
+    console.log("target manifest tree is >>>>>>>>>>" + targetManifestTree)
     let grandMa = getParentManifestOnlyCommon(sourceManifestName, targetManifestTree);
 
     return grandMa;
@@ -370,6 +389,7 @@ function getParentManifest(manifestFileName, targetManifests) {
 
 function getParentManifestOnlyCommon(manifestFileName, targetManifests) {
     let remotePath = __dirname + '/repos/';
+    console.log('**********' + manifestFileName)
     let targetCheckout = manifestFileName.split('manifestcheckin')[0] + 'manifestcheckout.json';
     let targetCheckoutData = JSON.parse(fs.readFileSync(remotePath + targetCheckout));
 
@@ -400,13 +420,14 @@ function parseDirectoryForCheckOut(manifestPath, localRepoPath, oldManifestData)
         for (let i = 1; i < filePathOnLocal.length - 1; i++) {
             fileToBeCreated = fileToBeCreated + '/' + filePathOnLocal[i]
         }
+        console.log('********************File to be created -->' + fileToBeCreated)
         mkdirp(fileToBeCreated, function (err) {
             if (err) console.error(err)
             let artifactPath = fileData.relativePath + '/' + fileData.artifactId;
             console.log('Creating file ---->' + fileToBeCreated)
             let fileContents = fs.readFileSync(artifactPath, 'utf-8');
             let relativePathForLocalFile = fileToBeCreated + '/' + filePathOnLocal[filePathOnLocal.length - 1];
-            fs.writeFileSync(relativePathForLocalFile, fileContents)
+            fs.writeFileSync(relativePathForLocalFile, fileContents, { mode: 0o755 })
             console.log(manifestPath);
             let manifestDataString = fs.readFileSync(manifestPath);
             let manifestData = JSON.parse(manifestDataString);
@@ -417,7 +438,7 @@ function parseDirectoryForCheckOut(manifestPath, localRepoPath, oldManifestData)
                 artifactId: fileData.artifactId
             }
             manifestData.fileNames.push(manifestFileData)
-            fs.writeFileSync(manifestPath, JSON.stringify(manifestData));
+            fs.writeFileSync(manifestPath, JSON.stringify(manifestData), { mode: 0o755 });
 
         });
 
@@ -429,31 +450,54 @@ function parseDirectoryForCheckOut(manifestPath, localRepoPath, oldManifestData)
 
 //create a folder with the filename and save file with artifact id name
 function createFileWithArtifactId(sourcePath, fileName, destPath, manifestPath) {
+
     fs.readFile(sourcePath, 'utf8', function (err, contents) {
         if (err) {
             console.log(err)
         } else {
             let artifactId = calculateArtifactId(sourcePath, contents)
-            fs.appendFile(destPath + "/" + artifactId, contents, (err) => {
-                if (err)
-                    console.log(err);
-                else {
-                    let manifestString = fs.readFileSync(manifestPath);
-                    let manifestData = JSON.parse(manifestString);
-                    let fileObject = {
-                        fileName: fileName,
-                        relativePath: destPath,
-                        artifactId: artifactId
-                    };
+            let checkPath = destPath + "/" + artifactId
+            if (fs.existsSync(checkPath)) {
 
-                    manifestData.fileNames.push(fileObject);
-                    console.log('File created ---> ' + fileObject.relativePath);
+                console.log('(((((((((((((' + manifestPath)
+                let manifestString = fs.readFileSync(manifestPath, { mode: 0o755 });
+                let manifestData = JSON.parse(manifestString);
+                let fileObject = {
+                    fileName: fileName,
+                    relativePath: destPath,
+                    artifactId: artifactId
+                };
 
-                    fs.writeFileSync(manifestPath, JSON.stringify(manifestData))
+                manifestData.fileNames.push(fileObject);
+                console.log('File created ---> ' + fileObject.relativePath);
+                console.log(manifestData + " +++++++++++ ")
+                fs.writeFileSync(manifestPath, JSON.stringify(manifestData), { mode: 0o755 })
+
+            } else {
+
+                fs.writeFile(checkPath, contents, (err) => {
+                    if (err)
+                        console.log(err);
+                    else {
+                        console.log('i am in changed data(((((((((((((' + manifestPath)
+                        let manifestString = fs.readFileSync(manifestPath, { mode: 0o755 });
+                        let manifestData = JSON.parse(manifestString);
+                        let fileObject = {
+                            fileName: fileName,
+                            relativePath: destPath,
+                            artifactId: artifactId
+                        };
+
+                        manifestData.fileNames.push(fileObject);
+                        console.log('File created ---> ' + fileObject.relativePath);
+
+                        fs.writeFileSync(manifestPath, JSON.stringify(manifestData), { mode: 0o755 })
 
 
-                }
-            });
+                    }
+                });
+            }
+
         }
     });
 
