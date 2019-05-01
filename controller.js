@@ -125,10 +125,18 @@ router.get('/new/repos(/*)?', (req, res) => {
 });
 
 router.post('/new/repos(/*)?', (req, res) => {
-    let urlArray = req.url.split('/');
+    let urlArray = []
+    if (req.url.includes('//')) {
+        tempUrlArray = req.url.split('//')
+        let tempUrl = tempUrlArray[0] + '/' + tempUrlArray[1]
+        urlArray = tempUrl.split('/')
+    } else {
+        urlArray = req.url.split('/');
+    }
+
+    console.log(urlArray[3] + '____________________+++++++++++++++')
     if (req.body.file) {
         console.log('***' + req.body.fileName.trim() + '++++ ' + req.body.fileData)
-
         let manifestPath = __dirname + '/repos/' + urlArray[3] + 'manifest.json';
         manifestPath = replaceBackSlash(manifestPath)
         console.log(manifestPath)
